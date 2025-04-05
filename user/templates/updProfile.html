@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% block title %}Edit Profile{% endblock  %}
+{% block container %}
+<section class="pt-40 pb-40 mt-n1">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="section-title">
+                    <h2 class="text-white" style="font-family: cursive;">Profile Setting</h2>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="d-flex justify-content-md-end mb-5 mb-md-0">
+                    <a href="{% url 'myProfile' %}" class="btn btn-border style-c1">see Previws</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+    
+                    <div class="card mb-60">
+                        <div class="card-body">
+                            <div class="profile-images">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="profile-edit mb-5 mb-lg-0">
+                                            <h3 class="text-white">Profile Image</h3>
+                                            <div class="author-cover author-cover-edit">
+                                                <img src="{{userData.profilepic.url}}" style="height:300px;width:300px" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="profile-cover-edit">
+                                            <h3 class="text-white">Profile Banner</h3>
+                                            <div class="author-cover author-cover-edit">
+                                                <img src="{{userData.coverpic.url}}" style="height:300px;width:570px" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-60">
+                        <div class="card-body">
+                            <div class="account-info">
+                                <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                                <h3 class="text-white pb-3">Account Information</h3>
+                                <div id="errmsg" name="errmsg"></div>
+                                <div class="form-group">
+                                    <label for="txtUname" class="text-white">Username</label> 
+                                    <input type="text" onblur="valuname();" class="form-control" id="txtUname" name="txtUname" value="{{userData.username}}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtPwd" class="text-white">Password</label> 
+                                    <input type="password" onblur="valpwd();" class="form-control" id="txtPwd" name="txtPwd" value="{{userData.password}}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtEmail" class="col-md-5 text-white">Email Address</label>
+                                    <input type="email" onblur="valemail();" class="form-control" id="txtEmail" name="txtEmail" value="{{userData.email}}"> 
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtPhone" class="col-md-5 text-white">Contact</label>
+                                    <input type="text" onblur="valphone();" class="form-control" id="txtPhone" name="txtPhone" value="{{userData.phone}}"> 
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-white">Select Gender</label>&nbsp;&nbsp;
+                                    <input type="radio" name="gender" value="Male" {% if userData.gender == "Male" %}checked{% endif %}>&nbsp;Male&nbsp;&nbsp;
+                                    <input {% if userData.gender == "Female" %}checked{% endif %} type="radio" name="gender" value="Female">&nbsp;Female&nbsp;&nbsp;  
+                                    <input {% if userData.gender == "Others" %}checked{% endif %} type="radio" name="gender" value="Others">&nbsp;Others
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtEmail" class="col-md-5 text-white">Select City</label>
+                                    <select class="form-control" name="city" id="city">
+                                        <option value="" disabled {% if not userData.cityid %}selected{% endif %}>Select a city</option>
+                                        {% for c in cities %}
+                                            <option value="{{ c.cityid }}" {% if userData.cityid.cityid == c.cityid %}selected{% endif %}>
+                                                {{ c.cityname }}
+                                            </option>
+                                        {% endfor %}
+                                    </select> 
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtBio" class="col-md-5 text-white">Bio</label>
+                                    <textarea name="txtBio" id="txtBio" class="form-control">{{userData.bio}}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-white">Do You Want To Change Your Identity (User/Photographer) ?</label>&nbsp;&nbsp;
+                                    <input type="radio" name="identity" {% if not userData.identity %}checked{% endif %} value="False">&nbsp;User&nbsp;&nbsp;
+                                    <input type="radio" name="identity" {% if userData.identity %}checked{% endif %} value="True">&nbsp;Photographer&nbsp;&nbsp;
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 text-white">Upload New Cover Pic</label>
+                                    <input type="file" name="cup" class="form-control" /> 
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-5 text-white">Upload New Profile Pic</label>
+                                    <input type="file" name="fup" class="form-control" /> 
+                                </div>
+                                <div class="col-12 pt-2">
+                                    <input type="submit" name="btnUpdProfile" class="btn" value="Edit">
+                                    <!-- <button type="submit" name="btnReg" class="btn">
+                                        <img src="assets/img/icons/btn-login.svg" alt="" class="svg"> register now
+                                    </button> -->
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        function valuname()
+                        {
+                            uname=document.getElementById("txtUname").value;
+                            patt=/^[A-Za-z]{3,20}$/;
+                            if(patt.test(uname))
+                            {
+                                document.getElementById("errmsg").setAttribute("class","alert text-success");
+                                document.getElementById("errmsg").innerHTML="Values are correct.";
+                                return true;
+                            }
+                            else
+                            {
+                                document.getElementById("errmsg").setAttribute("class","alert text-danger");
+                                document.getElementById("errmsg").innerHTML="Enter minimum 3 and maximum 15 characters only.";
+                                document.getElementById("txtUname").focus();
+                                return false;
+                            }
+                        }
+                        function valpwd()
+                        {
+                            pwd=document.getElementById("txtPwd").value;
+                            patt=/^[A-Za-z0-9_]{3,15}$/;
+                            if(patt.test(pwd))
+                            {
+                                document.getElementById("errmsg").setAttribute("class","alert text-success");
+                                document.getElementById("errmsg").innerHTML="Values are correct.";
+                                return true;
+                            }
+                            else
+                            {
+                                document.getElementById("errmsg").setAttribute("class","alert text-danger");
+                                document.getElementById("errmsg").innerHTML="Enter alphabets,digits,_.";
+                                document.getElementById("txtPwd").focus();
+                                return false;
+                            }
+                        }
+                        function valemail()
+                        {
+                            email=document.getElementById("txtEmail").value;
+                            patt=/^[A-Za-z@.]{3,25}$/;
+                            if(patt.test(email))
+                            {
+                                document.getElementById("errmsg").setAttribute("class","alert text-success");
+                                document.getElementById("errmsg").innerHTML="Values are correct.";
+                                return true;
+                            }
+                            else
+                            {
+                                document.getElementById("errmsg").setAttribute("class","alert text-danger");
+                                document.getElementById("errmsg").innerHTML="Enter minimum 3 and maximum 15 characters only.";
+                                document.getElementById("txtEmail").focus();
+                                return false;
+                            }
+                        }
+                        function valphone()
+                        {
+                            phone=document.getElementById("txtPhone").value;
+                            patt=/^[0-9]{10}$/;
+                            if(patt.test(phone))
+                            {
+                                document.getElementById("errmsg").setAttribute("class","alert text-success");
+                                document.getElementById("errmsg").innerHTML="Values are correct.";
+                                return true;
+                            }
+                            else
+                            {
+                                document.getElementById("errmsg").setAttribute("class","alert text-danger");
+                                document.getElementById("errmsg").innerHTML="Enter 10 digits only.";
+                                document.getElementById("txtPhone").focus();
+                                return false;
+                            }
+                        }
+                    </script>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock  %}

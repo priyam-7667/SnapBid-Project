@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Wishlist{% endblock %}
+{% block container %}
+<h2 align="center" class="text-white" style="font-family: cursive;">Wishlist</h2>
+  <section class="pt-40 pb-40">
+    <div class="container">
+      <div class="row mb-40">
+        <div class="col-lg-8 order-1 order-lg-0">
+            <div class="filter-options d-flex flex-wrap justify-content-center justify-content-lg-start"></div>
+        </div>
+      </div>
+      <div class="row">
+        {% for l in likes %}
+        <div class="col-md-3">
+          <div class="card-group" style="height:465px;width:300px">
+            <div class="card">
+              <a id="image" href="{% url 'imageDetails' %}?id={{l.imageid.imageid}}">
+                <img src="../static/assets/img/watermark.png"  style="height: 262px;width: 412px;z-index: 1;filter: invert(1);opacity: 0.4;position: absolute;top: 10;border-radius: 10px;">
+                <img src="{{l.imageid.imageurl.url}}" style="height:262px;width:412px;object-fit:cover;border-radius: 10px;" class="card-img-top" alt="...">
+              </a>
+              {% if l.userid.userid == request.session.uid %}
+              <a class="user-avatar position-absolute" style="top:240px;left: 10px;" href="{% url "myProfile" %}?uid={{l.imageid.userid.userid}}" >                                   
+                <img class="lazy" style="height:48px;width:48px" src="{{l.imageid.userid.profilepic.url}}" alt="">
+              </a>
+              {% else %}
+              <a class="user-avatar position-absolute" style="top:230px;left: 10px;" href="{% url "otherProfile" %}?uid={{l.imageid.userid.userid}}">  
+                <img class="lazy" style="height:48px;width:48px" src="{{l.imageid.userid.profilepic.url}}" alt="">
+              </a>
+              {% endif %}
+              <div class="p-3">
+                <h5 class="text-white pt-3">{{l.imageid.imagename}}</h5>
+                <p>{{l.imageid.subcategoryid.subcategoryname}}</p>
+                {% if l.imageid.userid.userid == request.session.uid %}
+                <a href="{% url "myProfile" %}?uid={{l.imageid.userid.userid}}"><h5 style="color: #ff0076;">By, {{l.imageid.userid.username}}</h5></a>
+                {% else %}
+                <a href="{% url "otherProfile" %}?uid={{l.imageid.userid.userid}}"><h5 style="color: #ff0076;">By, {{l.imageid.userid.username}}</h5></a>
+                {% endif %}
+              </div>
+              <div class="card-footer">
+                <p class="text-white">
+                  {% if not l.imageid.freePaid %}
+                    <span class="text-white">Free</span>
+                  {% else %}
+                    <span>₹ {{l.imageid.mrp}}</span>
+                  {% endif %}
+                </p>
+              </div>
+            </div>
+          </div>
+          <!--<div class="single-product mb-30">
+            {% if l.userid.userid == request.session.uid %}
+            <a class="user-avatar" href="{% url "myProfile" %}?uid={{l.userid.userid}}">                                   
+                <img class="lazy" style="height:48px;width:48px" src="{{l.userid.profilepic.url}}" alt="">
+                <i class="fa fa-check"></i>
+            </a>
+            {% else %}
+            <a class="user-avatar" href="{% url "otherProfile" %}?uid={{l.userid.userid}}">  
+                                                 
+                <img class="lazy" style="height:48px;width:48px" src="{{l.userid.profilepic.url}}" alt="">
+                <i class="fa fa-check"></i>
+            </a>
+            {% endif %}
+            <a id="image" href="{% url 'imageDetails' %}?id={{l.imageid.imageid}}">
+              <img src="{{l.imageid.imageurl.url}}" style="height:512px;width:412px" alt="" />
+            </a>
+            <div class="product-content">
+              <div class="product-top">
+                <h5>{{l.imageid.imagename}}</h5>
+                {% if not i.freePaid %}
+                    MRP : <h6 class>Free</h6>
+                {% else %}
+                <span>MRP : {{l.imageid.mrp}}</span>
+                {% endif %}
+                <h5 class="mt-3">{{l.userid.username}}</h5>
+              </div>
+            </div>
+          </div>-->
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endblock  %}

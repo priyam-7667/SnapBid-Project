@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block title %}Other Profile{% endblock title %}
+{% block container %}
+<div class="sep-bottom">
+    
+    <img src="{{u.coverpic.url}}" style="width:84vw;height:400px;object-fit:cover" alt="">
+    </div>
+    <div class="author-info">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6 d-flex justify-content-center justify-content-lg-start">
+            <div class="author-profile text-center text-white d-inline-block pb-2 pb-lg-4">
+              <div class="user-avatar">
+                <img src="{{u.profilepic.url}}" alt="" />
+              </div>
+              <h5 class="user_name text-white">{{u.username}}</h5>
+              <p>{{u.regDate}}</p>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div
+              class="d-flex flex-wrap align-items-center mt-10 justify-content-center justify-content-lg-end mb-3 mb-lg-0">
+              <form method="post">{% csrf_token %}
+                <div class="de-flex-col">
+                    {% if doesFollows %}
+                    <a class="btn btn-border style--two fz-13 mr-10 mb-10" href="{% url 'unfollow' %}?uid={{u.userid}}" class="btn-outline-danger">Unfollow</a>
+                    {% else %}
+                    <a class="btn btn-border style--two fz-13 mr-10 mb-10" href="{% url 'follow' %}?uid={{u.userid}}" class="btn-outline-danger">Follow</a>
+                    {% endif %}
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="pt-40 pb-40">
+    <div class="container">
+      <div class="row mb-40">
+        <div class="col-xl-9 order-1 order-xl-0">
+          <ul class="nav tab-buttons justify-content-center justify-content-xl-start">
+            <li>
+              <a
+                class="active select-rounded text-uppercase lg"
+              >
+                Posts <span>{{image|length}}</span>
+            </a>
+            </li>
+            <li>
+              <a
+                class="active select-rounded text-uppercase lg"
+                data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
+              >
+                Followers <span>{{followers|length}}</span>
+              </a>
+              <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                 <div class="offcanvas-header">
+                  <h5>Followers</h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    {% for x in followers %}
+                      {% if x.user.userid == request.session.uid %}
+                      <div class="profile_avatar p-1">
+                        <a href="{% url 'myProfile' %}?uid={{x.user.userid}}"><img src="{{x.user.profilepic.url}}" style="width:50px;height:50px;"></a>
+                        <span class="p-2"><a class="" href="{% url 'myProfile' %}?uid={{x.user.userid}}">{{x.user.username}}</a></span>
+                      </div>
+                      {% else %}
+                      <div class="profile_avatar p-1">
+                        <a href="{% url 'otherProfile' %}?uid={{x.user.userid}}"><img src="{{x.user.profilepic.url}}" style="width:50px;height:50px;"></a>
+                        <span class="p-2"><a class="" href="{% url 'otherProfile' %}?uid={{x.user.userid}}">{{x.user.username}}</a></span>
+                      </div>
+                      {% endif %}
+                      {% endfor %}
+                </div>
+              </div>
+            </li>
+            <li>
+              <a
+                class="select-rounded text-uppercase lg"
+                data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight1" aria-controls="offcanvasRight"
+              >
+                Followings <span>{{followings|length}}</span>
+              </a>
+              <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight1" aria-labelledby="offcanvasRightLabel">
+                <div class="offcanvas-header">
+                 <h5>Followings</h5>
+                   <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+               </div>
+               <div class="offcanvas-body">
+                {% for y in followings %}
+                {% if y.userid.userid == request.session.uid %}
+                  <div class="profile_avatar p-1">
+                    <a href="{% url 'myProfile' %}?uid={{y.userid.userid}}"><img src="{{y.userid.profilepic.url}}" style="width:50px;height:50px;"></a>
+                    <span class="p-2"><a class="" href="{% url 'myProfile' %}?uid={{y.userid.userid}}">{{y.userid.username}}</a></span>
+                  </div> 
+                {% else %}
+                  <div class="profile_avatar p-1">
+                    <a href="{% url 'otherProfile' %}?uid={{y.userid.userid}}"><img src="{{y.userid.profilepic.url}}" style="width:50px;height:50px;"></a>
+                    <span class="p-2"><a class="" href="{% url 'otherProfile' %}?uid={{y.userid.userid}}">{{y.userid.username}}</a></span>
+                  </div> 
+                {% endif %}
+                {% endfor %}
+               </div>
+             </div>
+              
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="tab-content">
+        <div class="tab-pane fade show active" id="collected">
+          <div class="row">
+            {% for i in image %}
+            <div class="col-md-4">
+                <div class="single-product mb-30">
+                  <a id="image" href="{% url 'imageDetails' %}?id={{i.imageid}}">
+                    <img src="../static/assets/img/watermark.png"  style="height: 512px;width: 412px;z-index: 1;filter: invert(1);opacity: 0.4;position: absolute;top: 10;border-radius: 10px;">
+                    <img src="{{i.imageurl.url}}" style="height: 512px; width: 412px;object-fit:cover;border-radius: 10px;" alt="" />
+                  </a>
+                    <div class="product-content">
+                        <div class="product-top">
+                            <h5>{{i.imagename}}</h5>
+                            {% if not i.freePaid %}
+                            <span class="text-white">MRP : Free</span>
+                            {% else %}
+                            <span>MRP : ₹ {{i.mrp}}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock container %}

@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% block title %}Edit Profile{% endblock  %}
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="section-title text-white">
+            <h2 align="center" style="font-family: cursive;">Edit Image</h2>
+        </div>
+    </div>
+</div>
+<section class="pt-40 pb-40 mt-n1">
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="upload-info">
+                            <form enctype="multipart/form-data" class="form-border" method="post">
+                                {% csrf_token %}
+                                <div id="errmsg" name="errmsg"></div>
+                                <h3 class="text-white pb-5">Upload Information</h3>
+                                <div class="form-group">
+                                    <label class="text-white" for="txtName">Image Name</label> <input type="text" onblur="valname();" name="txtName" id="txtName" class="form-control text-white" value="{{imageData.imagename}}" placeholder="Enter Image Name" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-white" for="fup">Choose Image</label> <input type="file" name="fup" id="fup" class="form-control text-white" placeholder="Choose Image" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-white" for="fup">Free or Paid ?</label> <input type="radio" {% if not imageData.freePaid %}checked{% endif %} name="freePaid" id="free" value="False" class="bg-dark text-white" /> Free
+                                    <input type="radio" {% if imageData.freePaid %}checked{% endif %} name="freePaid" id="paid" value="True" class="bg-dark text-white" /> Paid
+                                </div>
+                                <div class="form-group">
+                                    <div id="pfo">
+                                        <label class="text-white" for="txtMrp">MRP</label> <input type="text" onblur="valmrp();" name="txtMrp" id="txtMrp" class="form-control text-white" placeholder="Enter MRP" />
+
+                                        <label class="text-white" for="txtDiscount">Auction Amount</label> <input type="text" onblur="valdiscount();" name="txtDiscount" id="txtDiscount" class="form-control text-white" placeholder="Enter Discount" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-white" for="txtAuctionAmt">Select Category</label> 
+                                    <select class="form-control" name="subCategory">
+                                        <option value="" disabled {% if not imageData.subcategoryid %}selected{% endif %}>Select a category</option>
+                                        {% for s in subcat %}
+                                        <option value="{{s.subcategoryid}}" {% if imageData.subcategoryid.subcategoryid == s.subcategoryid %}selected{% endif %}>{{ s.subcategoryname }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtDescription" class="text-white">Enter Description</label> 
+                                    <textarea name="txtDescription" onblur="valdescription();" class="form-control text-white" placeholder="Enter Description" id="txtDescription">{{imageData.description}}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-white">Do You Want To Create Auction On This Image ?</label> 
+                                    <input type="radio" {% if imageData.inauction %}checked{% endif %} name="inAuction" value="True" />Yes
+                                    <input type="radio" {% if not imageData.inauction %}checked{% endif %} name="inAuction" value="False" />No
+                                </div>
+                                <div class="form-group d-flex justify-content-end pt-2 mb-0">
+                                    <input type="submit" name="btnImageUpdate" value="Edit Image" class="btn">
+                                </div>
+                            </form>
+                            <script type="text/javascript">
+                                function valname()
+                                {
+                                    name=document.getElementById("txtName").value;
+                                    patt=/^[A-Za-z :-]{3,50}$/;
+                                    if(patt.test(name))
+                                    {
+                                        document.getElementById("errmsg").setAttribute("class","alert text-success");
+                                        document.getElementById("errmsg").innerHTML="Values are correct.";
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        document.getElementById("errmsg").setAttribute("class","alert text-danger");
+                                        document.getElementById("errmsg").innerHTML="Enter minimum 3 and maximum 15 characters only.";
+                                        document.getElementById("txtName").focus();
+                                        return false;
+                                    }
+                                }
+                                function valmrp()
+                                {
+                                    mrp=document.getElementById("txtMrp").value;
+                                    patt=/^[0-9]{3,6}$/;
+                                    if(patt.test(mrp))
+                                    {
+                                        document.getElementById("errmsg").setAttribute("class","alert text-success");
+                                        document.getElementById("errmsg").innerHTML="Values are correct.";
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        document.getElementById("errmsg").setAttribute("class","alert text-danger");
+                                        document.getElementById("errmsg").innerHTML="Enter minimum 3 and maximum 6 digits only.";
+                                        document.getElementById("txtMrp").focus();
+                                        return false;
+                                    }
+                                }
+                                function valdiscount()
+                                {
+                                    mrp=document.getElementById("txtDiscount").value;
+                                    patt=/^[0-9]{1,2}$/;
+                                    if(patt.test(mrp))
+                                    {
+                                        document.getElementById("errmsg").setAttribute("class","alert text-success");
+                                        document.getElementById("errmsg").innerHTML="Values are correct.";
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        document.getElementById("errmsg").setAttribute("class","alert text-danger");
+                                        document.getElementById("errmsg").innerHTML="Enter maximum 2 digits only.";
+                                        document.getElementById("txtDiscount").focus();
+                                        return false;
+                                    }
+                                }
+                                function valdescription()
+                                {
+                                    name=document.getElementById("txtDescription").value;
+                                    patt=/^[A-Za-z.,:- ]{3,500}$/;
+                                    if(patt.test(name))
+                                    {
+                                        document.getElementById("errmsg").setAttribute("class","alert text-success");
+                                        document.getElementById("errmsg").innerHTML="Values are correct.";
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        document.getElementById("errmsg").setAttribute("class","alert text-danger");
+                                        document.getElementById("errmsg").innerHTML="Enter minimum 3 and maximum 500 characters only.";
+                                        document.getElementById("txtDescription").focus();
+                                        return false;
+                                    }
+                                }
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <h5 class="text-white py-3">Image</h5>
+                <img src="{{imageData.imageurl.url}}" style="height: 400px; width: 500px;object-fit:cover;border-radius: 10px;" alt="">
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $(document).ready(function(){
+        $("#pfo").hide();
+    });
+    $("#paid").click(function(){
+        $("#pfo").show();
+    });
+    $("#free").click(function(){
+        $("#pfo").hide();
+    });
+</script>
+{% endblock  %}

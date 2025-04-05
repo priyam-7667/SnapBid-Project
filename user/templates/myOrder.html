@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}My Orders{% endblock title %}
+{% block container %}
+<h1 class="text-white pb-4" align="center" style="font-family: cursive;">My Orders</h1>
+<table class="table">
+    <tr>
+        <th>Image Owner</th>
+        <th>Amount</th>
+        <th>Date</th>
+        <th>Image Name</th>
+        <th>Image</th>
+    </tr>
+    {% for o in order %}
+    <tr>
+        <td class="align-content-center">{{o.imageid.userid.username}}</td>
+        <td class="align-content-center">{{o.paymentamount}}</td>
+        <td class="align-content-center">{{o.createdDt}}</td>
+        <td class="align-content-center">{{o.imageid.imagename}}</td>
+        <td>
+            <img src="{{o.imageid.imageurl.url}}" class="align-content-center" style="height: 150px;width: 150px;object-fit:cover;border-radius: 10px;">
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock container %}

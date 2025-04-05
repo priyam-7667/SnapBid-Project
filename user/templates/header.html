@@ -1,0 +1,99 @@
+{% load static %}
+<header class="header">
+    <div class="header-main style--three love-sticky">
+        <div class="container">
+            <div class="header-inner position-relative px-0 mt-0 bg-transparent">
+                <div class="row align-items-center">
+                    <div class="col-lg-4 col-md-6 col-sm-9 col-6">
+                        <div class="d-flex align-items-center">
+                            <div class="logo">
+                                <a href="{% url 'home' %}">
+                                    <img src="{% static '../static/assets/img/logo1.jpg' %}" class="main-logo" style="height:70px;width:150px;filter: invert(1);mix-blend-mode: lighten;" alt="" />
+                                    <img src="{% static '../static/assets/img/logo1.jpg' %}" class="sticky-logo" style="height:70px;width:150px;mix-blend-mode: multiply;" alt="">
+                                </a>
+                            </div>
+                            <!--<form class="search-form d-none d-sm-block ms-4" action="#">
+                                <div class="form-group">
+                                    <button type="submit">
+                                    <img
+                                        src="{% static 'assets/img/icons/search-gradient.svg' %}"
+                                        class="svg"
+                                        alt=""
+                                    />
+                                    </button>
+                                    <input
+                                    type="text"
+                                    class="form-control mb-0"
+                                    placeholder="Search item…"
+                                    />
+                                </div>
+                            </form>-->
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-6 col-sm-3 col-6 d-flex align-items-center justify-content-end position-static">
+                        <div class="nav-wrapper d-flex align-items-center">
+                            <div class="nav-wrap-inner">
+                                <ul class="nav">
+                                    <li>
+                                        <a href="{% url 'home' %}">Home</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'displayImage' %}">Explore</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'liveAuction' %}">Auction</a>
+                                    </li>
+                                    <li><a href="{% url 'contact' %}">Contact</a></li>
+                                </ul>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="dropdown ms-3">
+                                    <a
+                                    href="#"
+                                    class="user-avatar dropdown-toggle"
+                                    data-bs-toggle="dropdown"
+                                    ><img src="{{request.session.profile}}" style="height:48px;width:48px" alt="" />
+                                    <span class="user-status"
+                                        ><img
+                                        src="{% static 'assets/img/icons/check.svg' %}"
+                                        class="svg"
+                                        alt="" /></span
+                                    ></a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a class="dropdown-item" href="{% url 'wishlists' %}"><img src="{% static 'assets/img/icons/wallet.svg' %}" alt="" />
+                                                Wishlists</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{% url 'myAuction' %}"><img src="{% static 'assets/img/icons/explore.svg' %}" alt="" />
+                                                My Auctions</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{% url 'myOrder' %}"><img src="{% static 'assets/img/icons/create.svg' %}" alt="" />
+                                                My Orders</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{% url 'myProfile' %}"><img src="{% static 'assets/img/icons/profile.svg' %}" alt="" />
+                                            Profile</a>
+                                        </li>
+                                        <li>
+                                            {% if request.session.uid %}
+                                            <a class="dropdown-item" href="{% url 'logout' %}">
+                                                <img src="{% static 'assets/img/icons/collection.svg' %}"
+                                                alt=""/>Logout</a>
+                                            {% else %}
+                                            <a class="dropdown-item" href="{% url 'login' %}">
+                                                <img src="{% static 'assets/img/icons/collection.svg' %}"
+                                                alt=""/>Login</a>
+                                            {% endif %}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

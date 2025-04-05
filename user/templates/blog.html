@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block container %}
+<section class="pt-40 pb-40">
+    <div class="container">
+      <div class="tab-content">
+        <div class="tab-pane fade show active" id="collected">
+          <div class="row">
+            
+            {% for i in image %}
+            
+            <div class="col-md-4">
+                <div class="single-product mb-30">
+                  <a id="image" href="{% url 'imageDetails' %}?id={{i.imageid}}">
+                    <img src="../static/assets/img/watermark.png"  style="height: 412px;width: 312px;z-index: 1;filter: invert(1);opacity: 0.4;position: absolute;top: 10;border-radius: 10px;">
+                    <img src="{{i.imageurl.url}}" style="height: 512px; width: 412px;object-fit:cover;border-radius: 10px;" alt="" />
+                  </a>
+                    <div class="product-content">
+                        <div class="product-top">
+                            <h5>{{i.imagename}}</h5>
+                            <p>{{i.description}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            {% endfor %}
+            
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+{% endblock container %}

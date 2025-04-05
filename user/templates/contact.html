@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Contact{% endblock title %}
+{% block container %}
+<div class="pt-60 pb-60 d-flex align-items-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+                <div class="section-title text-white text-center">
+                    <h2 style="font-family: cursive;">Get In Touch</h2>
+                    <p>The top NFTs on SnapBid, ranked by volume, floor price and other statistics. "Multiple" if you
+                        want to sell by ones collectibles upload your work likes image, video, audio times for
+                        SnapBid.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-xl-10">
+                <div class="card">
+                    <div class="card-body contact-form-wrap">
+                        <form action="https://www.themelooks.biz/demo/anefty/html/preview/sendmail.php"
+                            class="contact-form">
+                            <h3 class="pb-1">Quick Contact Us</h3>
+                            <div class="form-group"><label for="name">Full Name</label> <input type="text"
+                                    name="name" class="form-control" id="name" placeholder="Enter Name">
+                            </div>
+                            <div class="form-group"><label for="email">Email address</label> <input type="email"
+                                    name="email" class="form-control" id="email" placeholder="Enter Email">
+                            </div>
+                            <div class="form-group">
+                                <div class="row justify-content-between">
+                                    <label for="collection" class="col-md-5">Select Country</label> 
+                                    <span class="info col-md-7 d-flex opacity-50 justify-content-md-end mb-3 mb-lg-0">*Please Select Your Country</span>
+                                </div>
+                                <select id="collection" name="country" class="form-control">
+                                    <option value="bangladesh">Bangladesh</option>
+                                    <option value="pakistan">Pakistan</option>
+                                    <option value="honolulu">Honolulu</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">Subject</label> 
+                                <input type="text" name="subject" class="form-control" id="subject" placeholder="Services Request">
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label> 
+                                <textarea id="message" name="message" class="form-control" placeholder="Write your Message"></textarea>
+                            </div>
+                            <div class="pt-2">
+                                <button type="submit" class="btn">
+                                    <img src="assets/img/icons/btn_submit.svg" alt="" class="svg"> Send
+                                    Message
+                                </button>
+                            </div>
+                            <div class="form-response mt-3"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock container %}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Mirrored from www.themelooks.biz/demo/anefty/html/preview/profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Mar 2025 06:43:50 GMT -->
+    <head>
+        {% include "topScripts.html" %}
+        <title> {% block title %}{% endblock  %}</title>
+    </head>
+    <body>
+        {% include "header.html" %}
+    <section class="pt-120 pb-120">
+        <div class="container">
+            {% block container %}
+                        
+            {% endblock  %}
+        </div>
+    </section>
+    {% include "footer.html" %}
+    <a href="#" class="back-to-top"><i class="fas fa-long-arrow-alt-up"></i></a>
+    {% include "bottomScripts.html" %}
+    {% block end %}{% endblock  %}
+  </body>
+  <!-- Mirrored from www.themelooks.biz/demo/anefty/html/preview/profile.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Mar 2025 06:43:52 GMT -->
+</html>

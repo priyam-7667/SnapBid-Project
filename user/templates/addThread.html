@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Add Thread{% endblock title %}
+{% block container %}
+<div class="row">
+    <h1 align="center" class="text-white" style="font-family: cursive;">Add Comment</h1>
+</div>
+<div class="row">
+    <div class="">
+        <div class="d-flex-col">
+            <div class="avatar user-avatar d-flex align-items-center">
+                <img src="{{t.userid.profilepic.url}}" style="height:170px;width:170px" alt="">
+                <div class="profile_name" style="margin-left:10px">
+                    <h5>                                              
+                        <span>{{t.title}}</span><br>
+                        <span>{{t.description}}</span>
+                    </h5>
+                </div>
+            </div>
+            <h4 class="text-white py-3">{{t.userid.username}}</h4>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <form method="post" class="">{% csrf_token %}
+            <h1 class="text-white pt-2" style="font-family: cursive;">Reply Comments</h1>
+            <h5 class="text-white pt-5">Give Replay</h5>
+            <textarea name="txtctitle" class="form-control border-0 border-bottom text-white" placeholder="Add Replay"></textarea>
+
+            <input type="submit" name="btnCreateComm" class="btn" value="Reply Comment">
+        </form>
+    </div>
+    <div class="col-md-6">
+        {% for c in th %}
+        <div class="p-3 mt-3 w-75" style="background-color:#142442">                                    
+            <div class="avatar user-avatar">
+                <div class="d-flex justify-content-evenly w-100">
+                    <a href="{% url "otherProfile" %}?uid={{c.userid.userid}}" class="hz-profile creator media mb-4 mb-sm-0">
+                        <img class="lazy" style="height:60px;width:60px" src="{{c.userid.profilepic.url}}" alt="">
+                    </a>
+                    <div style="margin-left:10px">
+                        <a href="{% url "otherProfile" %}?uid={{c.userid.userid}}" class="text-white">{{c.userid.username}}</a>
+                        <p class="text-white">{{c.comment}}</p>
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <!--<div class="d-flex flex-row">
+            <div class="mr40">
+                <div class="">                                    
+                    <div class="avatar user-avatar">
+                        {% if c.userid.identity %}
+                        <a href="{% url "otherProfile" %}?uid={{c.userid.userid}}">
+                            <img class="lazy" src="{{c.userid.profilepic.url}}" style="height:60px;width:60px" alt="">
+                        </a>
+                        {% else %}
+                        <a href="">
+                            <img class="lazy" src="{{c.userid.profilepic.url}}" alt="">
+                        </a>
+                        {% endif %}
+                    </div>                                    
+                    <div class="">
+                        {% if c.userid.identity %}
+                        <a href="{% url "otherProfile" %}?uid={{i.userid.userid}}">{{c.userid.username}}</a>
+                        {% else %}
+                        <a href="{% url "otherProfile" %}?uid={{i.userid.userid}}">{{c.userid.username}}</a>
+                        {% endif %}
+                        <span class="">{{c.threadid.title}}</span>
+                        <p>{{c.comment}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+        {% endfor %}
+    </div>
+</div>
+{% endblock container %}

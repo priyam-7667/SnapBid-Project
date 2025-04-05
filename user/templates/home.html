@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock  %}
+{% block container %}
+<div class="container">
+    <div class="row align-items-center">
+        <div class="col-lg-6">
+            <div class="banner-content text-white mb-5 mb-lg-0">
+                <h5>you won’t believe your eyes</h5>
+                <h1>Digital Collection & Sell on <span style="font-family: cursive;">SnapBid</span></h1>
+                <p>SnapBid, we’re excited about brand new type of digital good called a non fungible tokens We’re
+                    proud to be the first and largest marketplace for NFTs.</p>
+                <ul class="list-info text-white">
+                    <li>
+                        <h4><span class="counter">3</span>k<span class="c1">+</span></h4>
+                        <h6>Artwork</h6>
+                    </li>
+                    <li>
+                        <h4><span class="counter">9</span>k<span class="c1">+</span></h4>
+                        <h6>Auction</h6>
+                    </li>
+                    <li>
+                        <h4><span class="counter">6</span>k<span class="c1">+</span></h4>
+                        <h6>Artist</h6>
+                    </li>
+                </ul>
+                <div class="button-group pt-5 flex-column flex-sm-row align-items-start align-items-sm-center">
+                    <a href="create.html" class="btn mb-3 mb-sm-0">
+                        <img src="../static/assets/img/icons/discover.svg" alt="" class="svg"> Explore NFT 
+                    </a>
+                    <a href="create.html" class="btn btn-border">
+                        <img src="../static/assets/img/icons/bid.svg" alt="" class="svg"> Place a
+                        bid
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="banner-img move-img">
+                <a href="https://www.youtube.com/watch?v=gfGuPd1CELo" class="vdo_btn popup-video ms-xl-4">
+                    <img src="assets/img/icons/play2.svg" alt="" class="svg"> 
+                </a>
+                <img src="../static/assets/img/media/banner-big-img.png" class="ms-xl-4" alt="">
+                <div class="banner-small-img d-none d-md-block">
+                    <img src="assets/img/media/banner-small-img.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="pt-60">
+    
+        <div class="row">
+            <div class="col-xl-4">
+                <div class="section-title style--two d-flex align-items-center justify-content-between">
+                    <h2 class="text-white">Recents</h2>
+                </div>
+            </div>
+            <div class="col-xl-8 mb-30 mb-xl-0">
+                <div class="d-flex align-items-center flex-wrap justify-content-center justify-content-lg-between justify-content-xl-end">
+                    <a href="{% url 'displayImage' %}" class="btn btn-sm ms-3 d-none d-lg-inline-flex">
+                        <img src="../static/assets/img/icons/view-all.svg" alt="" class="svg"> View All
+                    </a>
+                </div>
+            </div>  
+        </div>
+        <div class="row justify-content-center">
+            {% for i in img %}
+            <div class="col-md-3 py-3">
+                <div class="card-group" style="height:465px;width:300px">
+                  <div class="card">
+                    <a id="image" href="{% url 'imageDetails' %}?id={{i.imageid}}">
+                      <img src="../static/assets/img/watermark.png"  style="height: 262px;width: 412px;z-index: 1;filter: invert(1);opacity: 0.4;position: absolute;top: 10;border-radius: 10px;">
+                      <img src="{{i.imageurl.url}}" style="height:262px;width:412px;object-fit:cover;border-radius: 10px;" class="card-img-top" alt="...">
+                    </a>
+                    {% if i.userid.userid == request.session.uid %}
+                    <a class="user-avatar position-absolute" style="top:230px;left: 10px;" href="{% url "myProfile" %}?uid={{i.userid.userid}}" >                                   
+                      <img class="lazy" style="height:48px;width:48px" src="{{i.userid.profilepic.url}}" alt="">
+                    </a>
+                    {% else %}
+                    <a class="user-avatar position-absolute" style="top:240px;left: 10px;" href="{% url "otherProfile" %}?uid={{i.userid.userid}}">  
+                      <img class="lazy" style="height:48px;width:48px" src="{{i.userid.profilepic.url}}" alt="">
+                    </a>
+                    {% endif %}
+                    <div class="p-3">
+                      <h5 class="text-white pt-3">{{i.imagename}}</h5>
+                      <p>{{i.subcategoryid.subcategoryname}}</p>
+                      {% if i.userid.userid == request.session.uid %}
+                      <a href="{% url "myProfile" %}?uid={{i.userid.userid}}"><h5 style="color: #ff0076;">By, {{i.userid.username}}</h5></a>
+                      {% else %}
+                      <a href="{% url "otherProfile" %}?uid={{i.userid.userid}}"><h5 style="color: #ff0076;">By, {{i.userid.username}}</h5></a>
+                      {% endif %}
+                    </div>
+                    <div class="card-footer">
+                      <p class="text-white">
+                        {% if not i.freePaid %}
+                          <span class="text-white">Free</span>
+                        {% else %}
+                          <span>₹ {{i.mrp}}</span>
+                        {% endif %}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <div class="col-12 d-lg-none text-center mb-30">
+                <a href="explore.html" class="btn btn-sm ms-3">
+                    <img src="../static/assets/img/icons/view-all.svg" alt="" class="svg"> View All
+                </a>
+            </div>
+        </div>
+    
+</section>
+<section class="pt-60">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="section-title style--two">
+                    <h2 class="text-white">Featured Artists</h2>
+                </div>
+            </div>
+            <div class="col-sm-4 d-none d-sm-block">
+                <div class="swiper-nav">
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="swiper" data-swiper-loop="true" data-swiper-items="4" data-swiper-margin="30"
+                    data-swiper-breakpoints='{"0": {"slidesPerView": "1"},"420": {"slidesPerView": "2"}, "768": {"slidesPerView": "3"}, "992": {"slidesPerView": "4"}, "1200": {"slidesPerView": "5"}, "1400": {"slidesPerView": "4"}}'>
+                    <div class="swiper-wrapper">
+                        {% for u in user %}
+                        {% if u.identity %}
+                        <div class="swiper-slide">
+                            {% if u.userid == request.session.uid %}
+                            <div class="featured-artists">
+                                <div class="tp-img">
+                                    <a href="{% url "myProfile" %}?uid={{u.userid}}">
+                                        <img src="{{u.coverpic.url}}" style="height:110px;width:300px" alt="">
+                                    </a>
+                                </div>
+                                <div class="artists-content text-center">
+                                    <div class="user-avatar">
+                                        <a href="{% url "myProfile" %}?uid={{u.userid}}">
+                                            <img src="{{u.profilepic.url}}" style="height:48px;width:48px" alt="">
+                                        </a>
+                                    </div>
+                                    <h5 class="text-white">{{u.username}}</h5>
+                                    <a href="#" class="btn btn-follow">+ Follow</a>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="featured-artists">
+                                <div class="tp-img">
+                                    <a href="{% url "otherProfile" %}?uid={{u.userid}}">
+                                        <img src="{{u.coverpic.url}}" style="height:110px;width:300px" alt="">
+                                    </a>
+                                </div>
+                                <div class="artists-content text-center">
+                                    <div class="user-avatar">
+                                        <a href="{% url "otherProfile" %}?uid={{u.userid}}">
+                                            <img src="{{u.profilepic.url}}" style="height:48px;width:48px" alt="">
+                                        </a>
+                                    </div>
+                                    <h5 class="text-white">{{u.username}}</h5>
+                                    <a href="#" class="btn btn-follow">+ Follow</a>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="pt-60 pb-60">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="section-title style--two text-white">
+                    <h2>Browse Category</h2>
+                </div>
+            </div>
+            <div class="col-sm-4 d-none d-sm-block">
+                <div class="swiper-nav">
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="swiper live-auction" data-swiper-loop="true" data-swiper-items="4"
+                    data-swiper-margin="30"
+                    data-swiper-breakpoints='{"0": {"slidesPerView": "1"}, "768": {"slidesPerView": "2"}, "992": {"slidesPerView": "3"}}'>
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <a href="" class="category-item">
+                                <img src="../static/assets/img/media/cat1.png" alt="">
+                                <div class="content">
+                                    <img src="../static/assets/img/media/cat-s1.png" alt="">
+                                    <h5>Art Painting</h5>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="" class="category-item">
+                                <img src="../static/assets/img/media/cat2.png" alt="">
+                                <div class="content">
+                                    <img src="../static/assets/img/media/cat-s2.png" alt="">
+                                    <h5>Trading Painting</h5>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="" class="category-item">
+                                <img src="../static/assets/img/media/cat3.png" alt="">
+                                <div class="content">
+                                    <img src="../static/assets/img/media/cat-s3.png" alt="">
+                                    <h5>Virtual Painting</h5>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock  %}

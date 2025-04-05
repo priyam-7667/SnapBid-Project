@@ -1,0 +1,80 @@
+<!DOCTYPE html><html lang="en">
+<!-- Mirrored from www.themelooks.biz/demo/anefty/html/preview/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Mar 2025 06:44:05 GMT -->
+<head>
+    {% include "topScripts.html" %}
+</head>
+<body>
+    <div class="py-5 d-flex align-items-center" style="min-height: calc(100vh - 100px);" data-bg-img="assets/img/bg/page-bg2.png">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-5 col-lg-7 col-md-10">
+                    <div class="card login-register-card">
+                        <div class="card-body">
+                            <div class="text-center mb-5">
+                                <h2>Reset Password</h2>
+                                <p>{{error}}</p>
+                            </div>
+                            <form method="post">{% csrf_token %}
+                                <div id="errmsg" name="errmsg"></div>
+                                <div class="form-group">
+                                    <label for="txtUname" class="mb-2 text-white">Username</label>
+                                    <input type="text" id="txtUname" name="txtUname" onblur="valuname();" class="form-control text-white" placeholder="Enter Username">
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtPwd" class="mb-2 text-white">Password</label>
+                                    <input type="password" onblur="valpwd();" name="txtPwd" id="txtPwd" class="form-control text-white" placeholder="password">
+                                </div>
+                                <div class="d-flex pt-2">
+                                    <input type="submit" name="btnForgetPwd" class="btn" value="Reset Now">
+                                </div>
+                                <p class="pt-3" align="center">Don't have an account yet? <a href="{% url 'register' %}" class="c1">Register Now!</a></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="#" class="back-to-top"><i class="fas fa-long-arrow-alt-up"></i></a>
+    {% include "bottomScripts.html" %}
+    <script type="text/javascript">
+        function valuname()
+        {
+            uname=document.getElementById("txtUname").value;
+            patt=/^[A-Za-z ]{3,20}$/;
+            if(patt.test(uname))
+            {
+                document.getElementById("errmsg").setAttribute("class","alert text-success");
+                document.getElementById("errmsg").innerHTML="Values are correct.";
+                return true;
+            }
+            else
+            {
+                document.getElementById("errmsg").setAttribute("class","alert text-danger");
+                document.getElementById("errmsg").innerHTML="Enter minimum 3 and maximum 15 characters only.";
+                document.getElementById("txtUname").focus();
+                return false;
+            }
+        }
+        function valpwd()
+        {
+            pwd=document.getElementById("txtPwd").value;
+            patt=/^[A-Za-z0-9_]{3,15}$/;
+            if(patt.test(pwd))
+            {
+                document.getElementById("errmsg").setAttribute("class","alert text-success");
+                document.getElementById("errmsg").innerHTML="Values are correct.";
+                return true;
+            }
+            else
+            {
+                document.getElementById("errmsg").setAttribute("class","alert alert-danger");
+                document.getElementById("errmsg").innerHTML="Enter alphabets,digits,_.";
+                document.getElementById("txtPwd").focus();
+                return false;
+            }
+        }
+    </script>
+</body>
+<!-- Mirrored from www.themelooks.biz/demo/anefty/html/preview/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Mar 2025 06:44:06 GMT -->
+</html>

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Live Auction{% endblock title %}
+{% block container %}
+<h2 align="center" class="text-white" style="font-family: cursive;">My Auctions</h2>
+    <section class="pt-60 pb-60">
+      <div class="container">
+        <div class="row mb-25">
+          <div class="col-lg-8 order-1 order-lg-0">
+            <div
+              class="filter-options d-flex flex-wrap justify-content-center justify-content-lg-start"
+            >
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          {% for a in auction %}
+          {% if a.userid.userid == request.session.uid %}
+          <div class="col-md-3">
+            <div class="card-group" style="height:465px;width:300px">
+              <div class="card">
+                <a id="image" href="{% url 'auctionDetails' %}?id={{a.imageid.imageid}}">
+                  <img src="../static/assets/img/watermark.png"  style="height: 262px;width: 412px;z-index: 1;filter: invert(1);opacity: 0.4;position: absolute;top: 10;border-radius: 10px;">
+                  <img src="{{a.imageid.imageurl.url}}" style="height:262px;width:412px;object-fit:cover;border-radius: 10px;" class="card-img-top" alt="...">
+                </a>
+                {% if a.userid.userid == request.session.uid %}
+                <a class="user-avatar position-absolute" style="top:240px;left: 10px;" href="{% url "myProfile" %}?uid={{a.userid.userid}}" >                                   
+                  <img class="lazy" style="height:48px;width:48px" src="{{a.userid.profilepic.url}}" alt="">
+                </a>
+                {% else %}
+                <a class="user-avatar position-absolute" style="top:230px;left: 10px;" href="{% url "otherProfile" %}?uid={{a.userid.userid}}">  
+                  <img class="lazy" style="height:48px;width:48px" src="{{a.userid.profilepic.url}}" alt="">
+                </a>
+                {% endif %}
+                <div class="p-3">
+                  <h5 class="text-white pt-3">{{a.imageid.imagename}}</h5>
+                  <p>{{a.imageid.subcategoryid.subcategoryname}}</p>
+                  {% if a.userid.userid == request.session.uid %}
+                  <a href="{% url "myProfile" %}?uid={{a.userid.userid}}"><h5 style="color: #ff0076;">By, {{a.userid.username}}</h5></a>
+                  {% else %}
+                  <a href="{% url "otherProfile" %}?uid={{a.userid.userid}}"><h5 style="color: #ff0076;">By, {{a.userid.username}}</h5></a>
+                  {% endif %}
+                </div>
+                <div class="card-footer">
+                  <p class="text-white">
+                    {% if not a.imageid.freePaid %}
+                      <span class="text-white">Free</span>
+                    {% else %}
+                      <span>₹ {{a.imageid.mrp}}</span>
+                    {% endif %}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <!--<div class="single-product mb-30">
+              {% if a.userid.userid == request.session.uid %}
+              <a class="user-avatar" href="{% url "myProfile" %}?uid={{a.userid.userid}}">                                   
+                  <img class="lazy" style="height:48px;width:48px" src="{{a.userid.profilepic.url}}" alt="">
+                  <i class="fa fa-check"></i>
+              </a>
+              {% else %}
+              <a class="user-avatar" href="{% url "otherProfile" %}?uid={{a.userid.userid}}">  
+                                                   
+                  <img class="lazy" style="height:48px;width:48px" src="{{a.userid.profilepic.url}}" alt="">
+                  <i class="fa fa-check"></i>
+              </a>
+              {% endif %}
+              <a id="image" href="{% url 'auctionDetails' %}?id={{a.imageid.imageid}}">
+                <img src="{{a.imageid.imageurl.url}}" style="height:512px;width:412px" alt="" />
+              </a>
+              <div class="product-content">
+                <div class="product-top">
+                  <h5>{{a.imageid.imagename}}</h5>
+                  {% if not a.imageid.freePaid %}
+                      MRP : <h6 class>Free</h6>
+                  {% else %}
+                  <span>MRP : {{a.imageid.mrp}}</span>
+                  {% endif %}
+                  <h5 class="mt-3">{{a.userid.username}}</h5>
+                </div>
+              </div>
+            </div>-->
+          </div>
+          {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+{% endblock container %}

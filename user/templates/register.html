@@ -1,0 +1,176 @@
+<!DOCTYPE html><html lang="en">
+<!-- Mirrored from www.themelooks.biz/demo/anefty/html/preview/register.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Mar 2025 06:44:06 GMT -->
+    <head>
+        {% include "topScripts.html" %}
+    </head>
+    <body>
+        <div class="py-5 d-flex align-items-center" style="min-height: calc(100vh - 100px);" data-bg-img="assets/img/bg/page-bg2.png">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-10">
+                        <div class="card login-register-card">
+                            <div class="card-body">
+                                <div class="text-center mb-5">
+                                    <h2>Register New Account</h2>
+                                    <p>Already account yet? <a href="{% url 'login' %}" class="c1">Login Now!</a><p>
+                                </div>
+                                <form enctype="multipart/form-data" class="form-border" method="post">{% csrf_token %}
+                                    <div id="errmsg" name="errmsg"></div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtUname" class="mb-2 text-white">Username</label> <input type="text" onblur="valuname();" id="txtUname" name="txtUname" class="form-control text-white" placeholder="Enter Username">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtPwd" class="mb-2 text-white">Password</label>
+                                                <input type="password" onblur="valpwd();" id="txtPwd" name="txtPwd" class="form-control text-white" placeholder="Enter Password">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtEmail" class="mb-2 text-white">Email Address</label>
+                                                <input type="email" onblur="valemail();" id="txtEmail" name="txtEmail" class="form-control text-white" placeholder="Enter Email">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtPhone" class="mb-2 text-white">Contact Number</label> <input type="tel" onblur="valphone();" id="txtPhone" name="txtPhone" class="form-control text-white" placeholder="Enter Your Contact Number">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">&nbsp;&nbsp;
+                                                <label class="mb-2 text-white">Select Gender</label>
+                                                <input type="radio" name="gender" value="Male">&nbsp;Male&nbsp;&nbsp;
+                                                <input type="radio" name="gender" value="Female">&nbsp;Female&nbsp;&nbsp;
+                                                <input type="radio" name="gender" value="Others">&nbsp;Others
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="city" class="mb-2 text-white">Select City</label>
+                                                <select class="form-control" name="city" id="city">
+                                                {% for c in cities %}
+                                                    <option value="{{c.cityid}}">{{c.cityname}}</option>
+                                                {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtBio" class="mb-2 text-white">Bio</label> 
+                                                <textarea name="txtBio" cols="40" rows="10" id="txtBio" class="form-control text-white" placeholder="Enter Bio"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="mb-2 text-white">Register As A</label> 
+                                                &nbsp;&nbsp;
+                                                <input type="radio" name="identity" value="False">&nbsp;User&nbsp;&nbsp;
+                                                <input type="radio" name="identity" value="True">&nbsp;Photographer&nbsp;&nbsp;
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtPhone text-white" class="mb-2">Upload Cover Pic</label> <input type="file" name="cup" class="form-control" id="">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtPhone text-white" class="mb-2">Upload Profile Pic</label> <input type="file" name="fup" class="form-control" id="">
+                                            </div>
+                                        </div>
+                                        <div class="col-12 pt-2">
+                                            <input type="submit" name="btnReg" class="btn" value="Register Now">
+                                            <!-- <button type="submit" name="btnReg" class="btn">
+                                                <img src="assets/img/icons/btn-login.svg" alt="" class="svg"> register now
+                                            </button> -->
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="back-to-top"><i class="fas fa-long-arrow-alt-up"></i></a>
+        {% include "bottomScripts.html" %}
+        <script type="text/javascript">
+            function valuname()
+            {
+                uname=document.getElementById("txtUname").value;
+                patt=/^[A-Za-z]{3,20}$/;
+                if(patt.test(uname))
+                {
+                    document.getElementById("errmsg").setAttribute("class","alert text-success");
+                    document.getElementById("errmsg").innerHTML="Values are correct.";
+                    return true;
+                }
+                else
+                {
+                    document.getElementById("errmsg").setAttribute("class","alert text-danger");
+                    document.getElementById("errmsg").innerHTML="Enter minimum 3 and maximum 15 characters only.";
+                    document.getElementById("txtUname").focus();
+                    return false;
+                }
+            }
+            function valpwd()
+            {
+                pwd=document.getElementById("txtPwd").value;
+                patt=/^[A-Za-z0-9_]{3,15}$/;
+                if(patt.test(pwd))
+                {
+                    document.getElementById("errmsg").setAttribute("class","alert text-success");
+                    document.getElementById("errmsg").innerHTML="Values are correct.";
+                    return true;
+                }
+                else
+                {
+                    document.getElementById("errmsg").setAttribute("class","alert text-danger");
+                    document.getElementById("errmsg").innerHTML="Enter alphabets,digits,_.";
+                    document.getElementById("txtPwd").focus();
+                    return false;
+                }
+            }
+            function valemail()
+            {
+                email=document.getElementById("txtEmail").value;
+                patt=/^[A-Za-z@.]{3,25}$/;
+                if(patt.test(email))
+                {
+                    document.getElementById("errmsg").setAttribute("class","alert text-success");
+                    document.getElementById("errmsg").innerHTML="Values are correct.";
+                    return true;
+                }
+                else
+                {
+                    document.getElementById("errmsg").setAttribute("class","alert text-danger");
+                    document.getElementById("errmsg").innerHTML="Enter minimum 3 and maximum 15 characters only.";
+                    document.getElementById("txtEmail").focus();
+                    return false;
+                }
+            }
+            function valphone()
+            {
+                phone=document.getElementById("txtPhone").value;
+                patt=/^[0-9]{10}$/;
+                if(patt.test(phone))
+                {
+                    document.getElementById("errmsg").setAttribute("class","alert text-success");
+                    document.getElementById("errmsg").innerHTML="Values are correct.";
+                    return true;
+                }
+                else
+                {
+                    document.getElementById("errmsg").setAttribute("class","alert text-danger");
+                    document.getElementById("errmsg").innerHTML="Enter 10 digits only.";
+                    document.getElementById("txtPhone").focus();
+                    return false;
+                }
+            }
+        </script>
+    </body>
+<!-- Mirrored from www.themelooks.biz/demo/anefty/html/preview/register.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Mar 2025 06:44:06 GMT -->
+</html>

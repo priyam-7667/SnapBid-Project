@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+{% block title %}Image Details{% endblock title %}
+{% block container %}
+<section class="pt-60 pb-60">
+    <div class="container">
+        <div class="row justify-content-between">
+            <!-- Left Column -->
+            <div class="col-lg-6 order-lg-0">
+                <div class="item-details ov-hidden">
+                    <h2 class="product-title">{{i.imagename}}</h2>
+                    
+                    <!-- Info Section -->
+                    <div class="favorites d-flex">
+                        <div class="item_info_views"><i class="fa fa-eye"></i>{{i.totalviews}}</div>
+                        <div class="item_info_like mx-3">
+                            {{likes|length}}
+                            {% if isLiked %}
+                                <a class="text-light" href="{% url "unlikeImage" %}?id={{i.imageid}}"><i class="fa fa-heart text-danger"></i></a>
+                            {% else %}
+                                <a class="text-light" href="{% url "likeImage" %}?id={{i.imageid}}"><i class="fa fa-heart text-white"></i></a>
+                            {% endif %}
+                        </div>
+                        <div class="item_info_type">
+                            <a class="text-light" href="{% url 'download_image' %}?imgid={{i.imageid}}"><i class="fa fa-download"></i></a>
+                            {{i.totaldownloads}}
+                        </div>
+                    </div>
+        
+                    <!-- Description -->
+                    <p>{{i.description}}</p>
+        
+                    <!-- Price & Countdown -->
+                    <div class="row pt-1">
+                        <div class="col-sm-6">
+                            <div class="price mb-4 mb-sm-0">
+                                <h6>Item Price</h6>
+                                {% if i.freePaid %}
+                                    <h3>MRP : {{i.mrp}}</h3>
+                                {% else %}
+                                    <h3>Free</h3>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="countdown-wrapper">
+                                <h6>Countdown</h6>
+                                {% if auction.not_started %}
+                                    <p>The auction has not started yet!</p>
+                                {% else %}
+                                    {% if auction.enddate %}
+                                        <p>Auction ends in: <span id="timer"></span></p>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Buy Now / Bid -->
+                    {% if not i.userid.userid == request.session.uid %}
+                    <div class="button-group style--two mb-4 mt-3">
+                        {% if not hasBidded %}
+                        <a href="#" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#place_a_bid">
+                            <img src="assets/img/icons/judge-icon.svg" alt="" class="svg"> Place Bid
+                        </a>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+        
+                    <!-- Bid Modal -->
+                    <div class="modal fade" id="place_a_bid" tabindex="-1" aria-labelledby="place_a_bid" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-black">Place a Bid</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="post">{% csrf_token %}
+                                        <p class="text-black">
+                                            You are about to place a bid for <b class="text-black">{{i.imagename}}</b> from <b class="text-black">{{i.userid.username}}</b>.
+                                        </p>
+                                        <p class="text-black">Minimum Bid Amount: <span class="text-black">{{auction.auctionamount}}</span></p>
+                                        <input type="number" name="txtBidAmount" min="{{bid.0.bidprice}}" class="form-control mb-2" placeholder="Enter bid" />
+                                        <input type="submit" name="btnPlaceBid" class="btn btn-primary" value="Place A Bid">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Creator Profile -->
+                    <div class="row mb-4 mt-4">
+                        <div class="col-sm-6">
+                            <a href="{% url 'otherProfile' %}?uid={{i.userid.userid}}" class="hz-profile creator media">
+                                <div class="avatar user-avatar">
+                                    <img style="height:48px;width:48px" src="{{i.userid.profilepic.url}}" alt="">
+                                </div>
+                                <div class="content media-body">
+                                    <h6>Creator</h6>
+                                    <h5>{{i.userid.username}}</h5>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+        
+                    <!-- Bids Section -->
+                    <ul class="nav tab-buttons">
+                        <li><button class="active" data-bs-toggle="tab" data-bs-target="#bids">Bids</button></li>
+                    </ul>
+                    <div class="tab-pane fade show active" id="bids">
+                        {% for b in bid %}  
+                        <div class="col-md-12">
+                            <div class="item_author">
+                                <div class="col-md-6">
+                                    <h2 class="text-danger text-center mb-0">&#8377;{{b.bidprice}}</h2>
+                                    <a href="{% url "otherProfile" %}?uid={{b.userid.userid}}">
+                                        <h6 class="text-center">{{b.userid.username}}</h6>
+                                    </a>
+                                    <h6 class="text-center">{{b.bidtime}}</h6>
+                                    {% if b.userid.userid == request.session.uid %}
+                                    <a class="text-center w-100"  href="{% url "delbid" %}?id={{b.imageid.imageid}}&bid={{b.bidid}}">Delete Bid</a>
+                                    {% endif %}
+                                    {% if forloop.first and request.session.uid %}
+                                    {% if b.userid.userid == request.session.uid %}
+                                        <p id="comDiv"></p>
+                                    {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Right Column -->
+            <div class="col-xl-5 col-lg-6 order-lg-1">
+                <div class="item-details-img">
+                    <img src="../static/assets/img/watermark.png" class="position-absolute" style="height: 647px; width: 513px; opacity: 0.4; filter: invert(1);">
+                    <img src="{{i.imageurl.url}}" style="height: 647px; width: 520px; object-fit:cover; border-radius: 10px;" alt="">
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</section>
+<script type="text/javascript">
+    var endTimeString = "{{ auction.enddate }}";  // Directly use raw string
+    // Convert into a valid JavaScript Date format
+    var endTime = new Date(endTimeString.replace("midnight", "00:00:00")).getTime();  
+    function updateTimer() {
+        var now = new Date().getTime();
+        var timeLeft = endTime - now;
+        if (timeLeft > 0) {
+            var days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            document.getElementById("timer").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+        } else {
+            document.getElementById("timer").innerHTML = "Auction Ended!";
+            clearInterval(timerInterval);
+            var comDiv = document.querySelector("#comDiv"); // Select the first occurrence
+            if (comDiv && !document.getElementById("sellImageButton")) { 
+                comDiv.innerHTML += "<a class='btn' id='sellImageButton' onclick='pay()'>Make Payment</a>";
+            }      
+        }
+    }
+
+    updateTimer();  
+    var timerInterval = setInterval(updateTimer, 1000);
+</script>
+
+<script type="text/javascript">
+    function pay() {
+       fetch('{% url 'create_order' %}', { method: 'POST', headers: { 'X-CSRFToken': '{{ csrf_token }}' },body: new URLSearchParams({ "amount": "{{winBid.bidprice}}", "order_id": "{{winBid.bidid}}"}) })
+       .then(response => response.json())
+       .then(data => {
+           console.log(data);
+           var options = {
+               "key": "{{ razorpay_key }}",
+               "amount": data.amount,
+               "currency": "INR",
+               "name": "Your Company",
+               "description": "Test Transaction",
+               "order_id": data.id,
+               "handler": function (response) {
+           // Send payment details to backend for verification
+           fetch("{% url 'verify_payment' %}", {
+               method: "POST",
+               headers: {
+                   "Content-Type": "application/json",
+                   "X-CSRFToken": "{{ csrf_token }}"
+               },
+               body: JSON.stringify({
+                   order_id: data.id,
+                   payment_id: response.razorpay_payment_id,
+                   signature: response.razorpay_signature
+               })
+           })
+           .then(res => res.json())
+           .then(result => {
+                   window.location.href = "{% url 'success' %}";  // ✅ Redirect to success page  
+           });
+       }
+           };
+           var rzp1 = new Razorpay(options);
+           rzp1.open();
+       });
+   };
+</script>
+{% endblock container %}

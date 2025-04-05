@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% block title %}Insert Image{% endblock %}
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="section-title text-white">
+            <h2 align="center" style="font-family: cursive;">Create New Item</h2>
+        </div>
+    </div>
+</div>
+<img src="{{request.session.cover}}" style="width:84vw;height:400px;object-fit:cover" alt="">
+<section class="pt-120 pb-120">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="upload-info">
+                                <form enctype="multipart/form-data" class="form-border" method="post">
+                                    {% csrf_token %}
+                                    <div id="errmsg" name="errmsg"></div>
+                                    <h3 class="text-white pb-5">Upload Information</h3>
+                                    <div class="form-group">
+                                        <label class="text-white" for="txtName">Image Name</label> <input type="text" onblur="valname();" class="form-control text-white" id="txtName" name="txtName" placeholder="Enter Image Name">
+                                    </div>
+                                    <div class="text-white" class="form-group">
+                                        <label>Upload Image</label> <input type="file" class="form-control text-white" name="fup">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="text-white">Free or Paid ?</label>&nbsp;&nbsp;
+                                        <input type="radio" name="freePaid" id="free" value="False" /> Free&nbsp;&nbsp;
+                                        <input type="radio" name="freePaid" id="paid" value="True" /> Paid
+                                    </div>
+                                    <div class="form-group">
+                                        <div id="pfo">
+                                            <label class="text-white" for="txtMrp">MRP</label> <input type="text" onblur="valmrp();" name="txtMrp" id="txtMrp" class="form-control text-white" placeholder="Enter MRP" />
+
+                                            <label class="text-white" for="txtDiscount">Discount</label> <input type="text" onblur="valdiscount();" name="txtDiscount" id="txtDiscount" class="form-control text-white" placeholder="Enter Discount" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="text-white">Select Category</label> 
+                                        <select class="form-control" name="subCategory">
+                                            {% for s in subcat %}
+                                            <option value="{{s.subcategoryid}}">{{ s.subcategoryname }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="text-white" for="txtDescription">Description</label> 
+                                        <textarea name="txtDescription" onblur="valdescription();" class="form-control text-white" placeholder="Enter Description" id="txtDescription"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="text-white">Do You Want To Create Auction On This Image ?</label>&nbsp;&nbsp;
+                                        <input type="radio" name="inAuction" value="True" />&nbsp;Yes&nbsp;&nbsp;
+                                        <input type="radio" name="inAuction" value="False" />&nbsp;No&nbsp;&nbsp;
+                                    </div>
+                                    <div class="form-group d-flex justify-content-end pt-2 mb-0">
+                                        <input type="submit" name="btnImageInsert" value="Upload Image" class="btn">
+                                    </div>
+                                    <!--<div class="form-group d-flex justify-content-end pt-2 mb-0">
+                                        <button class="btn" type="submit">
+                                            <img src="assets/img/icons/btn-save.svg" alt="" class="svg"> Create Now
+                                        </button>
+                                    </div>-->
+                                </form>
+                                <script type="text/javascript">
+                                    function valname()
+                                    {
+                                        name=document.getElementById("txtName").value;
+                                        patt=/^[A-Za-z :-]{3,50}$/;
+                                        if(patt.test(name))
+                                        {
+                                            document.getElementById("errmsg").setAttribute("class","alert text-success");
+                                            document.getElementById("errmsg").innerHTML="Values are correct.";
+                                            return true;
+                                        }
+                                        else
+                                        {
+                                            document.getElementById("errmsg").setAttribute("class","alert text-danger");
+                                            document.getElementById("errmsg").innerHTML="Enter minimum 3 and maximum 15 characters only.";
+                                            document.getElementById("txtName").focus();
+                                            return false;
+                                        }
+                                    }
+                                    function valmrp()
+                                    {
+                                        mrp=document.getElementById("txtMrp").value;
+                                        patt=/^[0-9]{3,6}$/;
+                                        if(patt.test(mrp))
+                                        {
+                                            document.getElementById("errmsg").setAttribute("class","alert text-success");
+                                            document.getElementById("errmsg").innerHTML="Values are correct.";
+                                            return true;
+                                        }
+                                        else
+                                        {
+                                            document.getElementById("errmsg").setAttribute("class","alert text-danger");
+                                            document.getElementById("errmsg").innerHTML="Enter minimum 3 and maximum 6 digits only.";
+                                            document.getElementById("txtMrp").focus();
+                                            return false;
+                                        }
+                                    }
+                                    function valdiscount()
+                                    {
+                                        mrp=document.getElementById("txtDiscount").value;
+                                        patt=/^[0-9]{1,2}$/;
+                                        if(patt.test(mrp))
+                                        {
+                                            document.getElementById("errmsg").setAttribute("class","alert text-success");
+                                            document.getElementById("errmsg").innerHTML="Values are correct.";
+                                            return true;
+                                        }
+                                        else
+                                        {
+                                            document.getElementById("errmsg").setAttribute("class","alert text-danger");
+                                            document.getElementById("errmsg").innerHTML="Enter maximum 2 digits only.";
+                                            document.getElementById("txtDiscount").focus();
+                                            return false;
+                                        }
+                                    }
+                                    function valdescription()
+                                    {
+                                        name=document.getElementById("txtDescription").value;
+                                        patt=/^[A-Za-z.,:- ]{3,500}$/;
+                                        if(patt.test(name))
+                                        {
+                                            document.getElementById("errmsg").setAttribute("class","alert text-success");
+                                            document.getElementById("errmsg").innerHTML="Values are correct.";
+                                            return true;
+                                        }
+                                        else
+                                        {
+                                            document.getElementById("errmsg").setAttribute("class","alert text-danger");
+                                            document.getElementById("errmsg").innerHTML="Enter minimum 3 and maximum 500 characters only.";
+                                            document.getElementById("txtDescription").focus();
+                                            return false;
+                                        }
+                                    }
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $(document).ready(function(){
+        $("#pfo").hide();
+    });
+    $("#paid").click(function(){
+        $("#pfo").show();
+    });
+    $("#free").click(function(){
+        $("#pfo").hide();
+    });
+</script>
+{% endblock  %}

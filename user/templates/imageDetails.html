@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% block title %}Image Details{% endblock title %}
+{% block container %}
+<section class="pt-40 pb-40">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-6 order-1 order-lg-0">
+                <div class="item-details ov-hidden">
+                    <h2 class="product-title" style="font-family: cursive;">{{i.imagename}}</h2>
+                    <div class="favorites">
+                        <!--<h6 class="available">Available 12</h6>-->
+                        <div class="love-react-wrap d-flex align-items-center">
+                            <div class="item_info_views"><i class="fa fa-eye"></i>{{i.totalviews}}</div>
+                        </div>&nbsp;&nbsp;&nbsp;
+                        <div class="love-react-wrap d-flex align-items-center">
+                            <div class="item_info_like">
+                                {% if isLiked %}
+                                    <a class="text-light" href="{% url "unlikeImage" %}?id={{i.imageid}}"><i class="fa fa-heart" style="color:red;"></i></a>
+                                {% else %}
+                                    <a class="text-light" href="{% url "likeImage" %}?id={{i.imageid}}"><i class="fa fa-heart" style="color:white;"></i></a>
+                                {% endif %}
+                                {{likes|length}}
+                            </div>
+                        </div>&nbsp;&nbsp;&nbsp;
+                        {% if hasbought or not i.freePaid %}
+                        <div class="love-react-wrap d-flex align-items-center">
+                            <div class="item_info_type">
+                                <a class="text-light" href="{% url 'download_image' %}?imgid={{i.imageid}}"><i class="fa fa-download"></i></a>
+                                {{i.totaldownloads}}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <p>{{i.description}}</a>
+                    </p>
+                    <div class="row pt-1">
+                        <div class="col-sm-6">
+                            <div class="price mb-4 mb-sm-0">
+                                <h6>Item Price</h6>
+                                {% if i.freePaid %}
+                                <h3>MRP : {{i.mrp}}</h3>
+                                {% else %}
+                                <h3>Free</h3>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% if i.freePaid and not i.userid.userid == request.session.uid and not hasbought %}
+                    <div class="button-group style--two mb-4 mt-30 pt-2">
+                        <a onclick="pay()" class="btn btn-sm">
+                            Buy Now
+                        </a>
+                    </div>
+                    {% else %}
+                        {% if i.userid.userid == request.session.uid %}
+                        <div class="button-group style--two mb-4 mt-30 pt-2">
+                            <a href="{% url 'updImage' %}?id={{i.imageid}}" class="btn btn-sm">
+                                Edit Image
+                            </a>
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                    <div class="row mb-4 mt-40 pt-1">
+                        <div class="col-sm-6">
+                            {% if i.userid.userid == request.session.uid %}
+                            <a href="{% url 'myProfile' %}" class="hz-profile creator media mb-4 mb-sm-0">
+                                <div class="avatar user-avatar"><img style="height:48px;width:48px" src="{{i.userid.profilepic.url}}" alt=""></div>
+                                <div class="content media-body">
+                                    <h6>Creator</h6>
+                                    <h5>{{i.userid.username}}</h5>
+                                </div>
+                            </a>
+                            {% else %}
+                            <a href="{% url 'otherProfile' %}?uid={{i.userid.userid}}" class="hz-profile creator media mb-4 mb-sm-0">
+                                <div class="avatar user-avatar"><img style="height:48px;width:48px" src="{{i.userid.profilepic.url}}" alt=""></div>
+                                <div class="content media-body">
+                                    <h6>Creator</h6>
+                                    <h5>{{i.userid.username}}</h5>
+                                </div>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <form method="post">{% csrf_token %}
+                    <h1 class="text-white" style="font-family: cursive;">Comments</h1>
+                    <h5 class="text-white pt-5">Comment Title</h5>
+                    <input type="text" name="txtTitle" class="form-control border-0 border-bottom text-white" placeholder="Add Title">
+                    
+                    <h5 class="text-white">Thread Description</h5>
+                    <textarea name="txtDescription" class="form-control border-0 border-bottom text-white" placeholder="Add Description"></textarea>
+
+                    <input type="submit" name="btnCreateThread" class="btn btn-lg" value="Add Comment">
+                </form>
+                {% for t in threads %}
+                    <div class="p-3 mt-3 w-75" style="background-color:#142442">                                    
+                        <div class="avatar user-avatar">
+                            
+                                <div class="d-flex justify-content-evenly w-100">
+                                    <a href="{% url "otherProfile" %}?uid={{t.userid.userid}}" class="hz-profile creator media mb-4 mb-sm-0">
+                                        <img class="lazy" style="height:48px;width:48px" src="{{t.userid.profilepic.url}}" alt="">
+                                    </a>
+                                    <div style="margin-left:10px">
+                                    <a href="{% url "otherProfile" %}?uid={{t.userid.userid}}" class="text-white">{{t.userid.username}}</a>
+                                    <p class="text-white">{{t.description}}</p>
+
+                                    </div>
+                                </div>
+                            
+                                {#  <p class="text-white">{{t.title}}</p>  #}
+                            
+                        </div>                                    
+                        <div>
+                            <div class="col-md-3" style="margin-left:20px">
+                                <span class="text-white"><a class="btn btn-lg" href="{% url 'addThread' %}?tid={{t.threadid}}">View More</a></span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-xl-5 col-lg-6 order-0 order-lg-1">
+                <div class="item-details-img mb-5 mb-lg-0">
+                    <img src="../static/assets/img/watermark.png"  style="height: 647px;width: 513px;z-index: 1;filter: invert(1);opacity: 0.4;position: absolute;top: 10;border-radius: 10px;">
+                    <img src="{{i.imageurl.url}}" style="height: 647px; width: 520px;object-fit:cover;border-radius: 10px;" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script type="text/javascript">
+    function pay() {
+       fetch('{% url 'create_order2' %}', { method: 'POST', headers: { 'X-CSRFToken': '{{ csrf_token }}' },body: new URLSearchParams({ "amount": "{{i.price}}", "order_id": "{{i.imageid}}"}) })
+       .then(response => response.json())
+       .then(data => {
+           console.log(data);
+           var options = {
+               "key": "{{ razorpay_key }}",
+               "amount": data.amount,
+               "currency": "INR",
+               "name": "Your Company",
+               "description": "Test Transaction",
+               "order_id": data.id,
+               "handler": function (response) {
+           // Send payment details to backend for verification
+           fetch("{% url 'verify_payment' %}", {
+               method: "POST",
+               headers: {
+                   "Content-Type": "application/json",
+                   "X-CSRFToken": "{{ csrf_token }}"
+               },
+               body: JSON.stringify({
+                   order_id: data.id,
+                   payment_id: response.razorpay_payment_id,
+                   signature: response.razorpay_signature
+               })
+           })
+           .then(res => res.json())
+           .then(result => {
+                   window.location.href = "{% url 'success' %}";  // ✅ Redirect to success page  
+           });
+        }
+           };
+           var rzp1 = new Razorpay(options);
+           rzp1.open();
+       });
+   };
+</script>
+{% endblock container %}

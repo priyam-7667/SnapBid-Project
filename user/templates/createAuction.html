@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Create Auction{% endblock %}
+{% block container %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="section-title text-white">
+            <h2 align="center">Create Auction</h2>
+        </div>
+    </div>
+</div>
+<section class="pt-40 pb-40">
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="upload-info">
+                            <form enctype="multipart/form-data" class="form-border" method="post">
+                                {% csrf_token %}
+                                <h3 class="text-white pb-5">Upload Information</h3>
+                                <div class="form-group">
+                                    <label class="text-white" for="txtAuctionAmt">Auction Amount</label> <input type="text" onblur="valamt();" name="txtAuctionAmt" id="txtAuctionAmt" class="form-control text-white" placeholder="Enter Minimum Amount" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-white">Select Start Date</label> 
+                                    <input type="date" name="startDate" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-white">Select End Date</label> 
+                                    <input type="date" name="endDate" class="form-control" />
+                                </div>
+                                <div class="form-group d-flex justify-content-end pt-2 mb-0">
+                                    <input type="submit" name="btnCreateAuction" value="Create Auction" class="btn">
+                                </div>
+                                <!--<div class="form-group d-flex justify-content-end pt-2 mb-0">
+                                    <button class="btn" type="submit">
+                                        <img src="assets/img/icons/btn-save.svg" alt="" class="svg"> Create Now
+                                    </button>
+                                </div>-->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <h5 class="text-white py-3">Image</h5>
+                <img src="{{i.imageurl.url}}" style="height: 400px; width: 500px;object-fit:cover;border-radius: 10px;" alt="">
+                <div class="form-group py-3">
+                    <h5 class="text-white">Image Name</h5> 
+                    <span class="text-white">{{i.imagename}}</span>
+                </div>
+                <div class="form-group py-3">
+                    <h5 class="text-white">Image Price</h5> 
+                    <span class="text-white">{{i.mrp}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $(document).ready(function(){
+        $("#pfo").hide();
+    });
+    $("#paid").click(function(){
+        $("#pfo").show();
+    });
+    $("#free").click(function(){
+        $("#pfo").hide();
+    });
+</script>
+{% endblock  %}
